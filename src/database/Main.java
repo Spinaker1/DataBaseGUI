@@ -16,7 +16,7 @@ public class Main
 {
     public static void main(String[] argv)
    {
-       JavaDB javaDB = new JavaDB();
+       DBMananger javaDB = new DBMananger();
        GUI gui = new GUI(javaDB);
        
        java.awt.EventQueue.invokeLater(new Runnable() 
