@@ -156,19 +156,21 @@ public class DBMananger
        }
    }
 
-   public void updateRow(String tableName, Vector newValues)
+   public void updateRow(String tableName, Vector newValues, String id)
    {
-       try
+      try
        {
-           String text="INSERT INTO Samochody VALUES('";
-            for (Object newText: newValues)
+            String text="UPDATE "+tableName+" SET ";
+            Vector columnNames = getColumnNames(tableName);
+            for (int i=0; i<columnNames.size(); i++)
             {
-                text += newText + "','";
+                text += columnNames.get(i) + " = '" + newValues.get(i)+"', ";
             }
             text = text.substring(0, text.length()-2);
-            text += ")";
+            text += " WHERE "+columnNames.get(0)+" = '"+id+"'";
             System.out.println(text);
             stmt.executeUpdate(text);
+            
        }
        catch (SQLException e)
        {

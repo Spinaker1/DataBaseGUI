@@ -247,7 +247,16 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
+        Vector newValues = new Vector();
+        int columnCount = jTable1.getColumnCount();
+        
+        for (int i=0;i<columnCount;i++)
+        {
+            newValues.add(jTable1.getValueAt(4, i));
+        }
+        
+        dbManager.updateRow(table2Name,newValues,newValues.get(0).toString());
+        createTable(jTable2, table2Name);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
