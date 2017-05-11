@@ -17,6 +17,7 @@ public class GUI extends javax.swing.JFrame {
     private final DBMananger dbManager;
     String table1Name;
     String table2Name;
+    Vector unchangedTable;
    
     public GUI(DBMananger dbM) 
     {
@@ -24,6 +25,7 @@ public class GUI extends javax.swing.JFrame {
         dbManager = dbM;
         table1Name = "Samochody";
         table2Name = "Ubezpieczenie";
+        unchangedTable = null;
     }
 
     /**
@@ -248,14 +250,41 @@ public class GUI extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Vector newValues = new Vector();
-        int columnCount = jTable1.getColumnCount();
         
-        for (int i=0;i<columnCount;i++)
+        int columnCount = jTable2.getColumnCount();
+        int rowCount = jTable2.getRowCount()-1;
+        
+        for (int i=0; i<rowCount; i++)
         {
-            newValues.add(jTable1.getValueAt(4, i));
+            boolean toUpdate = false;
+            String primaryKey=null;
+            
+            for (int j=0; j<columnCount; j++)
+            {
+                Vector row = (Vector) unchangedTable.get(i);
+                String oldValue = (row.get(j)).toString();
+                String newValue = jTable2.getValueAt(i,j).toString();
+                newValues.add(newValue);
+                
+                if (j==0)
+                {
+                   primaryKey=newValue;
+                }
+                
+                if (!newValue.equals(oldValue))
+                {
+                    toUpdate=true;
+                }
+            } 
+            
+            if (toUpdate)
+            {
+                dbManager.updateRow(table2Name, newValues, primaryKey);
+            }
+            
+            newValues.clear();
         }
         
-        dbManager.updateRow(table2Name,newValues,newValues.get(0).toString());
         createTable(jTable2, table2Name);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -302,6 +331,11 @@ public class GUI extends javax.swing.JFrame {
        
        rowData.add(emptyRow);
        
+       if (jTable.equals(jTable2))
+       {
+           unchangedTable = dbManager.getTable(tableName);
+       }
+      
        jTable.setModel(new javax.swing.table.DefaultTableModel(rowData,columnNames));
     }   
     
