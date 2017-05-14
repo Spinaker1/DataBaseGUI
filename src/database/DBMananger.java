@@ -39,7 +39,7 @@ public class DBMananger
         } 
         catch (SQLException e) 
         {
-            System.out.println("Connection Failed! Check output console");
+            JOptionPane.showMessageDialog(null, "Connection failed", "Error", JOptionPane.INFORMATION_MESSAGE);
             return;
 	}
 
@@ -111,6 +111,7 @@ public class DBMananger
                 {
                     String text  = rs.getString(columnNames.get(i).toString());
                     row.add(text);
+                    System.out.println(rs.getType());
                 }
                 table.add(row);
             }
